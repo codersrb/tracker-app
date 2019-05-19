@@ -2,19 +2,27 @@
 
 namespace Radar;
 
-use Ratchet\MessageComponentInterface;
+use Psr\Http\Message\RequestInterface;
+use Radar\Traits\WsTrait;
+use Ratchet\Http\HttpServerInterface;
 use Ratchet\ConnectionInterface;
 
 /**
  * Class Chat
  * @package MyApp
  */
-class Chat implements MessageComponentInterface
+class Chat implements HttpServerInterface
 {
+    use WsTrait;
+
     /**
      * @var \SplObjectStorage
      */
-    protected $clients;
+    private $clients;
+    /**
+     * @var UserService
+     */
+    private $users;
 
     /**
      * Chat constructor.
@@ -22,34 +30,36 @@ class Chat implements MessageComponentInterface
     public function __construct()
     {
         $this->clients = new \SplObjectStorage;
+        $this->users = new UserService();
     }
 
     /**
      * @param ConnectionInterface $conn
      */
-    public function onOpen(ConnectionInterface $conn)
+    public function onOpen(ConnectionInterface $conn, RequestInterface $request = null)
     {
         // Store the new connection to send messages to later
         $this->clients->attach($conn);
-
         echo "New connection! ({$conn->resourceId})\n";
     }
 
     /**
      * @param ConnectionInterface $from
-     * @param string $msg
+     * @param string $msg Input data
      */
     public function onMessage(ConnectionInterface $from, $msg)
     {
-        $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+        $data = json_decode($msg);
+        switch ($data->action) {
+            case 'login' :
+                $data = $this->users->loginAction($data->userName, $data->geo, $from);
+                $this->sendToSelf($data, $from);
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
-            }
+                if($data['status'] == 'success') {
+                    $data = $this->users->getUsersAction();
+                    $this->sendToAll($data);
+                }
+                break;
         }
     }
 
@@ -60,6 +70,10 @@ class Chat implements MessageComponentInterface
     {
         // The connection is closed, remove it, as we can no longer send it messages
         $this->clients->detach($conn);
+        $this->users->logoutAction($conn);
+
+        $data = $this->users->getUsersAction();
+        $this->sendToAll($data);
 
         echo "Connection {$conn->resourceId} has disconnected\n";
     }

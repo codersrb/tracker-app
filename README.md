@@ -6,12 +6,12 @@ Tracker App is a WebSocket based, event-driven live tracker which helps you trac
 
 Tracker App uses a number of open source projects to work properly:
 
-* [VueJS](https://vuejs.org/) - HTML enhanced for web apps!
+* [VueJS](https://vuejs.org/) - for Client side programming
 * [Twitter Bootstrap](http://twitter.github.com/bootstrap/) - great UI boilerplate for modern web apps
-* [WebPack](https://webpack.js.org/) for building the Single Page application and local dev
+* [WebPack](https://webpack.js.org/) for building the Single Page Application (SPA) and local dev
 * [Ratcher PHP](http://socketo.me/) - For Server side websocket connections
-* [GoogleMaps](https://developers.google.com/maps/documentation/) - Google Maps
-* [PHP](php.net) - for server side programming
+* [GoogleMaps](https://developers.google.com/maps/documentation/) - for Maps and user location markers
+* [PHP](http://php.net) - for server side programming
 
 
 ### Config

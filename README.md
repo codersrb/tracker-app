@@ -14,8 +14,9 @@ Tracker App uses a number of open source projects to work properly:
 * [PHP](http://php.net) - for server side programming
 
 
-### Config
+### Info
 - WebSocket Port: 9090
+- WebSocker are being ran by Supervisor 
 - [Demo](http://tracker.mycodesamples.com) 
 
 ### Installation
@@ -33,6 +34,13 @@ For Client app
 $ cd live-location-app/public
 $ npm install -d
 $ node run serve
+```
+
+For Building Client app
+
+```sh
+$ cd public
+$ npm run webpack
 ```
 
 For Server app 

@@ -19,6 +19,10 @@ Tracker App uses a number of open source projects to work properly:
 - WebSocker are being ran by Supervisor 
 - [Demo](http://tracker.mycodesamples.com) 
 
+### Config
+- Add Google Map API Key in `dist/index.html` or `src/index.html`
+- WebSocket port can be changed in `bin/server.php`
+
 ### Installation
 
 Tracker App requires [Node.js](https://nodejs.org/) v8+ and [PHP](http://php.net) 7.2+. to run 

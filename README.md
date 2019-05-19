@@ -54,6 +54,9 @@ $ composer install
 $ php bin/server.php
 ```
 
+Or you can use Supervisor to keep the server app running.
+Use `supervisor.conf` for supervisor config
+
 ### Todos
 
  - Write tests for Services and Traits

@@ -12,4 +12,3 @@ new Vue({
     el: '#app',
     render: h => h(App)
 });
-// let apiKey = 'AIzaSyBBB4cG-s1Ry_Wg8VWcXOFoxZ05Lm2Pqxs'
